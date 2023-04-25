@@ -1,3 +1,4 @@
+const { matchedData } = require("express-validator");
 const messageModel = require("../models/messages");
 const { handleHttpError } = require("../utils/handleError");
 
@@ -22,8 +23,8 @@ const getMessages = async (req, res) => {
  */
 const getMessage = async (req, res) => {
   try {
-    console.log(req.params.id);
-    const { id } = req.params;
+    req = matchedData(req);
+    const { id } = req;
     const data = await messageModel.findOne({ where: { id } });
 
     if (!data) {
@@ -44,7 +45,8 @@ const getMessage = async (req, res) => {
  */
 const createMessage = async (req, res) => {
   try {
-    const body = req.body;
+    // saves only the clean data that corresponds to the validation done
+    const body = matchedData(req);
     const data = await messageModel.create(body);
     res.send({ data });
   } catch (error) {
@@ -59,14 +61,17 @@ const createMessage = async (req, res) => {
  */
 const updateMessage = async (req, res) => {
   try {
-    const id = req.params.id;
-    const { ...body } = req.body;
-    const data = await messageModel.update(body, { where: { id } });
+    // saves only the clean data that corresponds to the validation done
+    const { id, ...body } = matchedData(req); //save the id in an array, and the other data in other array
 
-    if (data <= 0) {
+    const result = await messageModel.update(body, { where: { id } });
+
+    if (result <= 0) {
       handleHttpError(res, "MESSAGE_NOT_FOUND ", 404);
       return;
     }
+
+    const data = await messageModel.findOne({ where: { id } });
 
     res.send({ data });
   } catch (error) {
@@ -74,10 +79,17 @@ const updateMessage = async (req, res) => {
   }
 };
 
-/** */
+/**
+ * Eliminar un registro
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 const deleteMessage = async (req, res) => {
   try {
-    const { id } = req.params;
+    // saves only the clean data that corresponds to the validation done
+    req = matchedData(req);
+    const { id } = req;
     const data = await messageModel.destroy({ where: { id } });
 
     if (data <= 0) {

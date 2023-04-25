@@ -1,6 +1,12 @@
 //import express
 const express = require("express");
 
+//import message validator
+const {
+  validatorCreateMessage,
+  validatorGetMessage,
+} = require("../validators/messages");
+
 //import messages controller
 const {
   getMessages,
@@ -20,19 +26,19 @@ router.get("/", getMessages);
 /**
  * Lista un item
  */
-router.get("/:id", getMessage);
+router.get("/:id", validatorGetMessage, getMessage);
 /**
  * inserta un item
  */
-router.post("/", createMessage);
+router.post("/", validatorCreateMessage, createMessage);
 /**
  * inserta un item
  */
-router.put("/:id", updateMessage);
+router.put("/:id", validatorGetMessage, validatorCreateMessage, updateMessage);
 /**
  * inserta un item
  */
-router.delete("/:id", deleteMessage);
+router.delete("/:id", validatorGetMessage, deleteMessage);
 
 //export router
 module.exports = router;
