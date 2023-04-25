@@ -1,6 +1,10 @@
 //import express
 const express = require("express");
 
+//import check role and session authorization from middlewares
+const authSession = require("../middlewares/session");
+const checkRol = require("../middlewares/rol");
+
 //import message validator
 const {
   validatorCreateMessage,
@@ -20,25 +24,43 @@ const {
 const router = express.Router();
 
 /**
- * Lista los items
+ * Lista los mensajes
  */
-router.get("/", getMessages);
+router.get("/", authSession, checkRol(["admin"]), getMessages);
 /**
- * Lista un item
+ * Lista un mensaje
  */
-router.get("/:id", validatorGetMessage, getMessage);
+router.get(
+  "/:id",
+  authSession,
+  checkRol(["admin"]),
+  validatorGetMessage,
+  getMessage
+);
 /**
- * inserta un item
+ * inserta un mensaje
  */
-router.post("/", validatorCreateMessage, createMessage);
+router.post(
+  "/",
+  authSession,
+  checkRol(["user"]),
+  validatorCreateMessage,
+  createMessage
+);
 /**
- * inserta un item
+ * actualiza un mensaje
  */
 router.put("/:id", validatorGetMessage, validatorCreateMessage, updateMessage);
 /**
- * inserta un item
+ * elimina un mensaje
  */
-router.delete("/:id", validatorGetMessage, deleteMessage);
+router.delete(
+  "/:id",
+  authSession,
+  checkRol(["admin"]),
+  validatorGetMessage,
+  deleteMessage
+);
 
 //export router
 module.exports = router;
