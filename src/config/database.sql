@@ -7,6 +7,7 @@ CREATE TABLE users(
 	name VARCHAR(50),
 	email VARCHAR(100),
     password VARCHAR(150),
+	role ENUM("user", "admin") DEFAULT "user",
 	createdAt DATE,
 	updatedAt DATE,
 	PRIMARY KEY(id)
