@@ -8,7 +8,6 @@ const { tokenSign } = require("../utils/handleJwt");
 const userModel = require("../models/users");
 //import hanlde errors
 const { handleHttpError } = require("../utils/handleError");
-const { use } = require("../routes/users");
 
 /**
  * Controlador encargado de registrar un usuario en DB
