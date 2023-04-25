@@ -1,29 +1,29 @@
-CREATE DATABASE agencia;
+CREATE DATABASE IF NOT EXISTS agencia;
 
 USE agencia;
 
 CREATE TABLE users(
-    id_user INT AUTO_INCREMENT,
+    id INT AUTO_INCREMENT,
 	name VARCHAR(50),
 	email VARCHAR(100),
     password VARCHAR(150),
 	createdAt DATE,
 	updatedAt DATE,
-	PRIMARY KEY(id_user)
+	PRIMARY KEY(id)
 );
 
 DESCRIBE users;
 
 CREATE TABLE messages(
-    id_message INT AUTO_INCREMENT,
+    id INT AUTO_INCREMENT,
 	name VARCHAR(50),
 	email VARCHAR(100),
 	message TEXT,
 	createdAt DATE,
 	updatedAt DATE,
-	PRIMARY KEY(id_message)
+	PRIMARY KEY(id)
 );
 
 DESCRIBE messages;
 
-INSERT INTO users(name, email, createdAt, updatedAt) VALUES('admin', 'admin@elite.com', now(), now());
+INSERT INTO messages(name, email, message, createdAt, updatedAt) VALUES('juan', 'juan@email.com', 'hola mundo', now(), now());
