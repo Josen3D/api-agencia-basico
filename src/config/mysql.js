@@ -1,6 +1,7 @@
-//import sequelize
+// import sequelize
 const { Sequelize } = require("sequelize");
 
+//create env variables to use
 const database = process.env.MYSQL_DATABASE;
 const username = process.env.MYSQL_USER;
 const password = process.env.MYSQL_PASSWORD;
@@ -16,7 +17,7 @@ const sequelize = new Sequelize(database, username, password, {
 const dbConnect = async () => {
   try {
     await sequelize.authenticate();
-    console.log("Connected to mysql");
+    console.log("COnnected to mysql");
   } catch (error) {
     console.log("MYSQL connection error ", error);
   }

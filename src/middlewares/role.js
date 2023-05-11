@@ -6,25 +6,26 @@ const { handleHttpError } = require("../utils/handleError");
  * @param {*} roles
  * @returns
  */
-const checkRol = (roles) => (req, res, next) => {
+const checkRole = (roles) => (req, res, next) => {
   try {
     const { user } = req;
     const rolesByUser = user.role;
     //Check if the user roles matches with the server roles
-    const checkValueRol = roles.some((rolSingle) =>
+    const checkValueRole = roles.some((rolSingle) =>
       rolesByUser.includes(rolSingle)
     );
+
     //verify if the user role is permitted
-    if (!checkValueRol) {
-      handleHttpError(res, "USER_NOT_PERMISSIONS", 403);
+    if (!checkValueRole) {
+      handleHttpError(res, "USER_NOT_PERMISSIONS");
       return;
     }
 
     next();
   } catch (error) {
-    handleHttpError(res, "ERROR_PERMISSION", 403);
+    handleHttpError(res, "ERROR_PERMISSIONS " + error);
   }
 };
 
 //export the check role module
-module.exports = checkRol;
+module.exports = checkRole;

@@ -1,15 +1,15 @@
-//import validation result from express validator
+// import validation result from express validator
 const { validationResult } = require("express-validator");
 
 // validates if data results are correct
-const validateResults = (req, res, next) => {
+const validateResult = (req, res, next) => {
   try {
     validationResult(req).throw();
-    return next(); // continue to controller
+    return next();
   } catch (error) {
     res.status(403);
     res.send({ errors: error.array() });
   }
 };
-//export module
-module.exports = validateResults;
+
+module.exports = validateResult;

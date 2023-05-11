@@ -1,53 +1,43 @@
-//import matched data
+// import matched data
 const { matchedData } = require("express-validator");
-//import the encrypt password an compare from utils
+// import compare and encrypt password
 const { encrypt, compare } = require("../utils/handlePassword");
-//import teken sign from utils
+// import token sign
 const { tokenSign } = require("../utils/handleJwt");
-//import users model
-const userModel = require("../models/users");
-//import hanlde errors
+// import handle error
 const { handleHttpError } = require("../utils/handleError");
+const { registerUser, loginUser } = require("../services/user");
 
-/**
- * Controlador encargado de registrar un usuario en DB
- * @param {*} req
- * @param {*} res
- */
-const registerUser = async (req, res) => {
+const register = async (req, res) => {
   try {
     req = matchedData(req);
     const password = await encrypt(req.password);
     const body = { ...req, password };
 
-    const dataUser = await userModel.create(body); //create the user on DB
-    dataUser.set("password", undefined, { strict: false }); // hide the password on the response
+    const responseUser = await registerUser(body); //create the user on DB
+    responseUser.set("password", undefined, { strict: false }); // hide the password on the response
 
     const data = {
-      token: await tokenSign(dataUser),
-      user: dataUser,
+      token: await tokenSign(responseUser),
+      user: responseUser,
     };
-    res.send({ data });
+    res.send(data);
   } catch (error) {
     handleHttpError(res, "ERROR_REGISTER_USER " + error);
   }
 };
 
-/**
- * Controlador encargado de logear a una persona
- * @param {*} req
- * @param {*} res
- */
-const loginUser = async (req, res) => {
+const login = async (req, res) => {
   try {
     req = matchedData(req);
-    const user = await userModel.findOne({ where: { email: req.email } }); // find an user by email
+    const user = await loginUser(req.email);
 
     //if user doesnt exist return the function
     if (!user) {
       handleHttpError(res, "USER_NOT_EXISTS", 404);
       return;
     }
+
     // saves the hash password from user on DB
     const hashPassword = user.get("password");
     //compare the password and the hash password and verify if it matches
@@ -57,6 +47,7 @@ const loginUser = async (req, res) => {
       handleHttpError(res, "PASSWORD_INVALID", 401);
       return;
     }
+
     //hide the password on the response
     user.set("password", undefined, { strict: false });
     const data = {
@@ -65,9 +56,9 @@ const loginUser = async (req, res) => {
     };
     res.send({ data });
   } catch (error) {
-    handleHttpError(res, "ERROR_LOGIN_USER");
+    handleHttpError(res, "ERROR_LOGIN_USER " + error);
   }
 };
 
 //export the register and login controllers
-module.exports = { registerUser, loginUser };
+module.exports = { register, login };

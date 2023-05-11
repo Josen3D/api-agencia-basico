@@ -4,4 +4,5 @@ const handleHttpError = (res, message = "Somethig went wrong", code = 403) => {
   res.send({ error: message });
 };
 
+//exports handleHttpError
 module.exports = { handleHttpError };

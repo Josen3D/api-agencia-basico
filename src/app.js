@@ -1,29 +1,25 @@
-//use dotenv to use env variables
-require("dotenv").config();
-//Import express and cors
+//import express
 const express = require("express");
+//import dotenv config
+require("dotenv/config");
 const cors = require("cors");
 
-//import DB connection
+//import mysql connection
 const { dbConnect } = require("./config/mysql");
 
 //create express app
 const app = express();
 
+// middleware to use cors and json data
 app.use(cors());
 app.use(express.json());
 
+// port
 const PORT = process.env.PORT || 3000;
 
-/**
- * Invoke the routes
- */
+// invoke the routes
 app.use("/api", require("./routes"));
-
-//put server to listen
-app.listen(PORT, () => {
-  console.log("Server running on port: " + PORT);
-});
-
+// put server to listen
+app.listen(PORT, () => console.log("server running on port: " + PORT));
 //connect to DB
 dbConnect();

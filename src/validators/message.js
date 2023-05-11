@@ -1,7 +1,7 @@
-//import check from express validator
+// import check from express validator
 const { check } = require("express-validator");
-//import the validate results from utils
-const validateResults = require("../utils/handleValidator");
+// import validate results from utils
+const validateResult = require("../utils/handleValidator");
 
 //create validators for createMessage
 const validatorCreateMessage = [
@@ -11,22 +11,19 @@ const validatorCreateMessage = [
 
   // validates the results of data
   (req, res, next) => {
-    return validateResults(req, res, next);
+    return validateResult(req, res, next);
   },
 ];
 
-//create validators for getMessage
+// create validators for getMessage
 const validatorGetMessage = [
   check("id").exists().notEmpty(),
 
   // validates the results of data
   (req, res, next) => {
-    return validateResults(req, res, next);
+    return validateResult(req, res, next);
   },
 ];
 
-//export validators
-module.exports = {
-  validatorCreateMessage,
-  validatorGetMessage,
-};
+//exports validators
+module.exports = { validatorCreateMessage, validatorGetMessage };

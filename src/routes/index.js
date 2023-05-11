@@ -13,12 +13,13 @@ const removeExtension = (fileName) => {
 };
 
 //reads the directories of routes and use it name on router
-const a = fs.readdirSync(PATH_ROUTES).filter((file) => {
+const routes = fs.readdirSync(PATH_ROUTES).filter((file) => {
   const name = removeExtension(file);
+
   if (name !== "index") {
     router.use(`/${name}`, require(`./${file}`));
   }
 });
 
-//Export router
+//exports the router
 module.exports = router;

@@ -1,6 +1,6 @@
-//import sequelize connection
+// import sequelize connection
 const { sequelize } = require("../config/mysql");
-//import DataTypes from sequelize
+// import DataTypes from sequelize
 const { DataTypes } = require("sequelize");
 
 //defines the model of table users on mysql

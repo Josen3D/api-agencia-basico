@@ -5,7 +5,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 /**
  * Pasar objeto del usuario
- * @param user
+ * @param {*} user
  * @returns
  */
 const tokenSign = async (user) => {
@@ -24,8 +24,8 @@ const tokenSign = async (user) => {
 };
 
 /**
- * Pasar token de sesión
- * @param tokenJwt
+ * Pasar token de sesion
+ * @param {*} tokenJwt
  * @returns
  */
 const verifyToken = async (tokenJwt) => {
